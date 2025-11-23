@@ -21,7 +21,16 @@ The `||` values concatenate the columns into strings.
 Edit the appropriate columns -- you're making two edits -- and the NULL rows will be fixed. 
 All the other rows will remain the same. */
 
-
+SELECT
+product_name || ', ' || coalesce(product_size, '') || ' (' || coalesce(product_qty_type, 'unit') || ')' as correct_list_of_products
+,product_name || ', ' || product_size|| ' (' || product_qty_type || ')' as list_of_products
+,product_name
+,product_size
+,product_qty_type
+,coalesce(product_size, '') as correct_product_size
+,coalesce(product_qty_type, 'unit') as correct_product_qty_type
+FROM product
+WHERE NULLIF(list_of_products,'') IS NULL -- comment this line to view detailed long list of products
 
 
 --Windowed Functions
