@@ -30,7 +30,7 @@ product_name || ', ' || coalesce(product_size, '') || ' (' || coalesce(product_q
 ,coalesce(product_size, '') as correct_product_size
 ,coalesce(product_qty_type, 'unit') as correct_product_qty_type
 FROM product
-WHERE NULLIF(list_of_products,'') IS NULL -- comment this line to view detailed long list of products
+WHERE NULLIF(list_of_products,'') IS NULL; -- comment this line to view detailed long list of products
 
 
 --Windowed Functions
@@ -43,6 +43,16 @@ each new market date for each customer, or select only the unique market dates p
 (without purchase details) and number those visits. 
 HINT: One of these approaches uses ROW_NUMBER() and one uses DENSE_RANK(). */
 
+SELECT
+x.customer_id,
+x.market_date,
+ROW_NUMBER() OVER(PARTITION BY customer_id ORDER BY market_date) as visit_number_rn,
+DENSE_RANK() OVER(PARTITION BY customer_id ORDER BY market_date) as visit_number_dn
+FROM (
+    SELECT DISTINCT customer_id, market_date
+    FROM customer_purchases
+)x
+ORDER BY customer_id, market_date;
 
 
 /* 2. Reverse the numbering of the query from a part so each customer’s most recent visit is labeled 1, 
