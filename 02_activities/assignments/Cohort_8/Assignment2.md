@@ -65,7 +65,7 @@ province
 postal_code
 country
 
-2. Retain Changes
+2. Retain Changes
 
 CUSTOMER_ADDRESS
 ----------------
